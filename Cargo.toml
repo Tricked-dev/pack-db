@@ -1,11 +1,11 @@
 [package]
-name = "packer"
+name = "pack-db"
 version = "0.1.0"
 edition = "2021"
 description = "Simple messagepack based database"
 readme = "README.md"
-homepage = "https://github.com/Tricked-dev/packer"
-repository = "https://github.com/Tricked-dev/packer"
+homepage = "https://github.com/Tricked-dev/pack-db"
+repository = "https://github.com/Tricked-dev/pack-db"
 keywords = ["database", "messagepack", "msgpack"]
 categories = ["messagepack", "database", "msgpack"]
 license = "Apache-2.0"

@@ -1,13 +1,13 @@
-# Packer
+# PackDb
 
-Packer is a simple key value messagepack store
+PackDb is a simple key value messagepack store
 Inspired by [kwik](https://deno.land/x/kwik/)
 It uses your local storage
 
 ## Example
 
 ```rs
-use packer::Packer:
+use pack_db::PackDb:
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Deserialize, Serialize)]
@@ -16,7 +16,7 @@ struct User {
     age: i32
 }
 
-let store = Packer::<User>::new(Some("data".to_owned()));
+let store = PackDb::<User>::new(Some("data".to_owned()));
 store.set("user1", User {name: "useer1", age: 16});
 let user = store.get("user1");
 ```

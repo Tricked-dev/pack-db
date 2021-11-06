@@ -1,10 +1,10 @@
-///! # Packer
-///! Packer is a simple key value messagepack store
+///! # PackDb
+///! PackDb is a simple key value messagepack store
 ///! Inspired by [kwik](https://deno.land/x/kwik/)
 ///! It uses your local storage
 ///! ## Example
 /// ```rs
-/// use packer::Packer:
+/// use pack_db::PackDb:
 /// use serde::{Deserialize, Serialize};
 ///
 /// #[derive(Debug, PartialEq, Deserialize, Serialize)]
@@ -13,7 +13,7 @@
 ///     age: i32
 /// }
 ///
-/// let store = Packer::<User>::new(Some("data".to_owned()));
+/// let store = PackDb::<User>::new(Some("data".to_owned()));
 /// store.set("user1", User {name: "useer1", age: 16});
 /// let user = store.get("user1");
 ///```
@@ -26,18 +26,18 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fs::{create_dir_all, metadata, read, read_dir, remove_file, write};
 
-pub struct Packer<T: DeserializeOwned + Serialize> {
+pub struct PackDb<T: DeserializeOwned + Serialize> {
     store: String,
     //Yeah idk how to do this in a better way sorry everyone!
     #[allow(dead_code)]
     a: Option<T>,
 }
-impl<T: DeserializeOwned + Serialize> Packer<T> {
+impl<T: DeserializeOwned + Serialize> PackDb<T> {
     //Create a new store
     pub fn new(store: Option<String>) -> Self {
-        let loc = store.unwrap_or_else(|| "packer".into());
+        let loc = store.unwrap_or_else(|| "data".into());
         create_dir_all(&loc).unwrap();
-        Packer::<T> {
+        PackDb::<T> {
             store: loc,
             a: None,
         }
@@ -103,7 +103,7 @@ mod test {
     use super::*;
     #[test]
     fn test() -> Result<()> {
-        let storage = Packer::<Human>::new(Some("store".to_owned()));
+        let storage = PackDb::<Human>::new(Some("store".to_owned()));
 
         storage.set(
             "testing",
