@@ -1,0 +1,19 @@
+[package]
+name = "packer"
+version = "0.1.0"
+edition = "2021"
+description = "Simple messagepack based database"
+readme = "README.md"
+homepage = "https://github.com/Tricked-dev/packer"
+repository = "https://github.com/Tricked-dev/packer"
+keywords = ["database", "messagepack", "msgpack"]
+categories = ["messagepack", "database", "msgpack"]
+license = "Apache-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rmp-serde = "1.0.0-beta.2"
+rmp = "0.8.10"
+serde = { version = "1.0.130", features = ["derive"] }
+anyhow = "1.0.45"
