@@ -4,6 +4,10 @@ PackDb is a simple key value messagepack store
 Inspired by [kwik](https://deno.land/x/kwik/)
 It uses your local storage
 
+```
+pack-db = "0.2.0"
+```
+
 ## Example
 
 ```rs
