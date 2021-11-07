@@ -24,7 +24,7 @@ use serde::de::DeserializeOwned;
 #[allow(unused_imports)]
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::fs::{create_dir_all, metadata, read, read_dir, remove_file, write};
+use std::fs::{create_dir_all, metadata, read, read_dir, remove_dir, remove_file, write};
 
 pub struct PackDb<T: DeserializeOwned + Serialize> {
     store: String,
@@ -63,7 +63,7 @@ impl<T: DeserializeOwned + Serialize> PackDb<T> {
         Ok(rmp_serde::from_read_ref(&r)?)
     }
 
-    /// Recieve every object in the store
+    /// Receive every object in the store
     pub fn get_all(&self) -> Result<HashMap<String, T>> {
         let mut res = HashMap::new();
         let entries = read_dir(&self.store)?;
@@ -85,10 +85,43 @@ impl<T: DeserializeOwned + Serialize> PackDb<T> {
         }
         Ok(res)
     }
+    /// returns the number of elements in the store
+    pub fn len(&self) -> Result<usize> {
+        let entries = read_dir(&self.store)?;
+        Ok(entries.flatten().count())
+    }
+
+    /// Checks if the store is empty
+    pub fn is_empty(&self) -> Result<bool> {
+        Ok(self.len()? == 0)
+    }
+
+    /// Insert a hashmap of values all at once
+    pub fn insert_many<K: std::fmt::Display>(&self, data: HashMap<K, T>) -> Result<bool> {
+        for (key, val) in data {
+            self.set(key, val)?;
+        }
+        Ok(true)
+    }
+
     ///Delete a key - this deletes the file from the file system
     pub fn delete<K: std::fmt::Display>(&self, key: K) -> bool {
         let exists = remove_file(self.path(key));
         exists.is_ok()
+    }
+
+    /// Empty the storage this deletes all keys from the storage
+    pub fn clear(&self) -> Result<bool> {
+        remove_dir(&self.store)?;
+        create_dir_all(&self.store)?;
+        Ok(true)
+    }
+
+    /// Clears the store, returning all key-value pairs as an HasMap
+    pub fn drain(&self) -> Result<HashMap<String, T>> {
+        let data = self.get_all();
+        self.clear()?;
+        data
     }
 }
 
